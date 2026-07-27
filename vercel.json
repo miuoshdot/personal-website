@@ -1,9 +1,40 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path((?!(?:about|projects|experience|education|achievements|skills|contact)/?$|(?:index\\.html|styles\\.css|script\\.js|favicon\\.svg|robots\\.txt|sitemap\\.xml)$|assets(?:/.*)?$|_vercel(?:/.*)?$).+)",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/about",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/projects",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/experience",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/education",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/achievements",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/skills",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/contact",
       "destination": "/index.html"
     }
   ]

@@ -22,6 +22,7 @@ const galleryEmpty = document.querySelector("#galleryEmpty");
 const searchInput = document.querySelector("#searchInput");
 const searchShortcut = document.querySelector("#searchShortcut");
 const sidebarToggle = document.querySelector("#sidebarToggle");
+const sidebar = document.querySelector("#sidebar");
 const listViewButton = document.querySelector("#listViewButton");
 const closeWindowButton = document.querySelector("#closeWindowButton");
 const minimizeWindowButton = document.querySelector("#minimizeWindowButton");
@@ -58,6 +59,11 @@ let scrollFrame;
 let searchMatches = [];
 let activeSearchMatch = -1;
 let isGalleryView = false;
+let sidebarSwipe = null;
+
+const SIDEBAR_SWIPE_EDGE = 32;
+const SIDEBAR_SWIPE_DISTANCE = 64;
+const SIDEBAR_SWIPE_AXIS_THRESHOLD = 10;
 
 function setSearchShortcutLabel() {
   const platform = navigator.userAgentData?.platform || navigator.platform || "";
@@ -459,6 +465,104 @@ function setSidebar(isVisible) {
   );
 }
 
+function resetSidebarSwipe() {
+  sidebarSwipe = null;
+}
+
+function beginSidebarSwipe(event) {
+  if (
+    !overlaySidebarMedia.matches ||
+    isGalleryView ||
+    event.touches.length !== 1
+  ) {
+    resetSidebarSwipe();
+    return;
+  }
+
+  const touch = event.touches[0];
+  const sidebarIsHidden = app.classList.contains("sidebar-hidden");
+  const sidebarBounds = sidebar.getBoundingClientRect();
+  const startsAtOpeningEdge =
+    sidebarIsHidden && touch.clientX <= SIDEBAR_SWIPE_EDGE;
+  const startsInsideOpenSidebar =
+    !sidebarIsHidden &&
+    touch.clientX >= sidebarBounds.left &&
+    touch.clientX <= sidebarBounds.right;
+
+  if (!startsAtOpeningEdge && !startsInsideOpenSidebar) {
+    resetSidebarSwipe();
+    return;
+  }
+
+  sidebarSwipe = {
+    startX: touch.clientX,
+    startY: touch.clientY,
+    sidebarWasHidden: sidebarIsHidden,
+    axis: null,
+  };
+}
+
+function trackSidebarSwipe(event) {
+  if (!sidebarSwipe || event.touches.length !== 1) return;
+
+  const touch = event.touches[0];
+  const deltaX = touch.clientX - sidebarSwipe.startX;
+  const deltaY = touch.clientY - sidebarSwipe.startY;
+  const horizontalDistance = Math.abs(deltaX);
+  const verticalDistance = Math.abs(deltaY);
+
+  if (
+    !sidebarSwipe.axis &&
+    Math.max(horizontalDistance, verticalDistance) >=
+      SIDEBAR_SWIPE_AXIS_THRESHOLD
+  ) {
+    sidebarSwipe.axis =
+      horizontalDistance > verticalDistance * 1.25
+        ? "horizontal"
+        : "vertical";
+  }
+
+  const movesInSidebarDirection = sidebarSwipe.sidebarWasHidden
+    ? deltaX > 0
+    : deltaX < 0;
+
+  if (
+    sidebarSwipe.axis === "horizontal" &&
+    movesInSidebarDirection &&
+    event.cancelable
+  ) {
+    event.preventDefault();
+  }
+}
+
+function finishSidebarSwipe(event) {
+  if (!sidebarSwipe) return;
+
+  const touch = event.changedTouches[0];
+  const swipe = sidebarSwipe;
+  resetSidebarSwipe();
+  if (!touch || swipe.axis !== "horizontal") return;
+
+  const deltaX = touch.clientX - swipe.startX;
+  const deltaY = touch.clientY - swipe.startY;
+  const isHorizontal =
+    Math.abs(deltaX) > Math.abs(deltaY) * 1.25;
+
+  if (!isHorizontal) return;
+
+  if (
+    swipe.sidebarWasHidden &&
+    deltaX >= SIDEBAR_SWIPE_DISTANCE
+  ) {
+    setSidebar(true);
+  } else if (
+    !swipe.sidebarWasHidden &&
+    deltaX <= -SIDEBAR_SWIPE_DISTANCE
+  ) {
+    setSidebar(false);
+  }
+}
+
 function showToast(message) {
   window.clearTimeout(toastTimer);
   toast.textContent = message;
@@ -668,6 +772,20 @@ noteView.addEventListener(
   { passive: true },
 );
 
+document.addEventListener("touchstart", beginSidebarSwipe, {
+  passive: true,
+});
+document.addEventListener("touchmove", trackSidebarSwipe, {
+  passive: false,
+});
+document.addEventListener("touchend", finishSidebarSwipe, {
+  passive: true,
+});
+document.addEventListener("touchcancel", resetSidebarSwipe, {
+  passive: true,
+});
+overlaySidebarMedia.addEventListener("change", resetSidebarSwipe);
+
 document.addEventListener("keydown", (event) => {
   if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
     event.preventDefault();
@@ -696,7 +814,7 @@ setSearchShortcutLabel();
 renderList();
 renderDocument();
 window.setInterval(updateCurrentDate, 60_000);
-setActiveNote(activeNoteId, "replace");
+setActiveNote(activeNoteId, "none");
 
 requestAnimationFrame(() => {
   scrollToNote(activeNoteId, "auto", "none");

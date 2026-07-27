@@ -1,3 +1,5 @@
+const PAGE_TITLE = "Hi, I'm Miłosz Miśkiewicz";
+
 const notes = [
   {
     id: "about",
@@ -7,7 +9,7 @@ const notes = [
     group: "Pinned",
     content: `
       <h1>About me</h1>
-      <p class="lead">A person who enjoys turning ideas into working products.</p>
+      <p class="lead">Student & developer creating thoughtful digital products.</p>
       <p>
         This is where a short, focused introduction will go: what you do,
         what matters to you, and which problems you are best at solving.
@@ -144,13 +146,32 @@ const galleryEmpty = document.querySelector("#galleryEmpty");
 const searchInput = document.querySelector("#searchInput");
 const searchShortcut = document.querySelector("#searchShortcut");
 const sidebarToggle = document.querySelector("#sidebarToggle");
+const listViewButton = document.querySelector("#listViewButton");
 const themeToggle = document.querySelector("#themeToggle");
 const shareButton = document.querySelector("#shareButton");
 const gridButton = document.querySelector("#gridButton");
+const trashButton = document.querySelector("#trashButton");
+const newNoteButton = document.querySelector("#newNoteButton");
 const toast = document.querySelector("#toast");
 const themeMeta = document.querySelector('meta[name="theme-color"]');
+const overlaySidebarMedia = window.matchMedia(
+  "(max-width: 760px), (max-width: 1100px) and (pointer: coarse)",
+);
 
-let activeNoteId = window.location.hash.slice(1) || notes[0].id;
+function getNoteIdFromPath() {
+  const pathSegments = window.location.pathname.split("/").filter(Boolean);
+  const routeId = pathSegments.at(-1);
+
+  return notes.some((note) => note.id === routeId)
+    ? routeId
+    : notes[0].id;
+}
+
+function getNotePath(noteId) {
+  return `/${noteId}`;
+}
+
+let activeNoteId = getNoteIdFromPath();
 let toastTimer;
 let scrollFrame;
 let searchMatches = [];
@@ -193,7 +214,12 @@ function renderList() {
       .filter((note) => note.group === groupName)
       .forEach((note) => {
         const item = document.createElement("div");
-        item.className = "note-list__item";
+        item.className = `note-list__item${note.id === activeNoteId ? " is-active" : ""}`;
+        const content = document.createElement("template");
+        content.innerHTML = note.content;
+        const preview =
+          content.content.querySelector(".lead, p")?.textContent.trim() || "";
+
         item.innerHTML = `
           <button
             class="note-list__button"
@@ -203,7 +229,7 @@ function renderList() {
           >
             <span class="note-list__icon" aria-hidden="true">${note.icon}</span>
             <span class="note-list__title">${note.title}</span>
-            <span class="note-list__count">${note.count}</span>
+            <span class="note-list__preview">${preview}</span>
           </button>
         `;
         group.append(item);
@@ -419,6 +445,7 @@ function setView(view, restorePosition = true) {
   workspace.hidden = isGalleryView;
   galleryView.hidden = !isGalleryView;
   app.classList.toggle("gallery-mode", isGalleryView);
+  listViewButton.setAttribute("aria-pressed", String(!isGalleryView));
   gridButton.setAttribute("aria-pressed", String(isGalleryView));
   gridButton.setAttribute(
     "aria-label",
@@ -450,10 +477,9 @@ function setActiveNote(noteId, historyMode = "none") {
   activeNoteId = note.id;
 
   document.querySelectorAll(".note-list__button").forEach((button) => {
-    button.setAttribute(
-      "aria-current",
-      button.dataset.noteId === activeNoteId ? "page" : "false",
-    );
+    const isActive = button.dataset.noteId === activeNoteId;
+    button.setAttribute("aria-current", isActive ? "page" : "false");
+    button.closest(".note-list__item")?.classList.toggle("is-active", isActive);
   });
 
   document.querySelectorAll(".gallery-card").forEach((card) => {
@@ -463,14 +489,16 @@ function setActiveNote(noteId, historyMode = "none") {
     );
   });
 
-  document.title = `${note.title} — My Notes`;
+  document.title = PAGE_TITLE;
 
-  if (window.location.hash !== `#${note.id}`) {
+  const notePath = getNotePath(note.id);
+
+  if (window.location.pathname !== notePath) {
     if (historyMode === "push") {
-      history.pushState(null, "", `#${note.id}`);
+      history.pushState(null, "", notePath);
     }
     if (historyMode === "replace") {
-      history.replaceState(null, "", `#${note.id}`);
+      history.replaceState(null, "", notePath);
     }
   }
 }
@@ -490,27 +518,51 @@ function scrollToNote(noteId, behavior = "smooth", historyMode = "push") {
 
   noteView.scrollTo({ top: targetTop, behavior });
 
-  if (window.matchMedia("(max-width: 1100px)").matches) {
+  if (overlaySidebarMedia.matches) {
     setSidebar(false);
   }
 }
 
 function updateActiveNoteFromScroll() {
-  const containerTop = noteView.getBoundingClientRect().top;
-  const readingLine = containerTop + Math.min(140, noteView.clientHeight * 0.24);
-  const distanceFromBottom =
-    noteView.scrollHeight - noteView.scrollTop - noteView.clientHeight;
-  let currentNoteId = notes[0].id;
+  const sections = [...document.querySelectorAll(".note-section")];
+  if (sections.length === 0) return;
 
-  if (distanceFromBottom <= 8) {
-    currentNoteId = notes.at(-1).id;
-  } else {
-    document.querySelectorAll(".note-section").forEach((section) => {
-      if (section.getBoundingClientRect().top <= readingLine) {
-        currentNoteId = section.dataset.noteId;
-      }
-    });
+  const readingOffset = Math.min(140, noteView.clientHeight * 0.24);
+  const maxScroll = Math.max(
+    0,
+    noteView.scrollHeight - noteView.clientHeight,
+  );
+  const finalSectionRange = Math.min(
+    72,
+    Math.max(44, noteView.clientHeight * 0.075),
+  );
+  const minimumSectionRange = Math.min(
+    180,
+    Math.max(120, noteView.clientHeight * 0.18),
+  );
+  const activationPoints = sections.map((section) =>
+    Math.min(maxScroll, Math.max(0, section.offsetTop - readingOffset)),
+  );
+  const lastIndex = activationPoints.length - 1;
+
+  activationPoints[lastIndex] = Math.min(
+    activationPoints[lastIndex],
+    Math.max(0, maxScroll - finalSectionRange),
+  );
+
+  for (let index = lastIndex - 1; index > 0; index -= 1) {
+    activationPoints[index] = Math.min(
+      activationPoints[index],
+      Math.max(0, activationPoints[index + 1] - minimumSectionRange),
+    );
   }
+
+  let currentNoteId = sections[0].dataset.noteId;
+  activationPoints.forEach((activationPoint, index) => {
+    if (noteView.scrollTop >= activationPoint) {
+      currentNoteId = sections[index].dataset.noteId;
+    }
+  });
 
   if (currentNoteId !== activeNoteId) {
     setActiveNote(currentNoteId, "replace");
@@ -625,8 +677,20 @@ shareButton.addEventListener("click", async () => {
   }
 });
 
+listViewButton.addEventListener("click", () => {
+  setView("document");
+});
+
 gridButton.addEventListener("click", () => {
-  setView(isGalleryView ? "document" : "gallery");
+  setView("gallery");
+});
+
+trashButton.addEventListener("click", () => {
+  showToast("Coming soon");
+});
+
+newNoteButton.addEventListener("click", () => {
+  showToast("Coming soon");
 });
 
 galleryGrid.addEventListener("click", (event) => {
@@ -642,8 +706,8 @@ galleryGrid.addEventListener("keydown", (event) => {
   openGalleryNote(card.dataset.galleryNoteId);
 });
 
-window.addEventListener("hashchange", () => {
-  scrollToNote(window.location.hash.slice(1), "smooth", "none");
+window.addEventListener("popstate", () => {
+  scrollToNote(getNoteIdFromPath(), "smooth", "none");
 });
 
 noteView.addEventListener(
@@ -675,18 +739,16 @@ document.addEventListener("keydown", (event) => {
 
 const preferredTheme =
   localStorage.getItem("notes-theme") || "dark";
+const startsWithCollapsedSidebar = overlaySidebarMedia.matches;
 
 applyTheme(preferredTheme);
+setSidebar(!startsWithCollapsedSidebar);
 setSearchShortcutLabel();
 renderList();
 renderDocument();
 window.setInterval(updateCurrentDate, 60_000);
-setActiveNote(activeNoteId);
+setActiveNote(activeNoteId, "replace");
 
 requestAnimationFrame(() => {
   scrollToNote(activeNoteId, "auto", "none");
 });
-
-if (window.matchMedia("(max-width: 1100px)").matches) {
-  setSidebar(false);
-}

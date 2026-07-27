@@ -1,5 +1,6 @@
 :root {
   color-scheme: light;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
   --accent: #ffcc00;
   --accent-strong: #e7a900;
   --app-background: #d8d8d8;
@@ -58,7 +59,7 @@ body {
   overflow-x: hidden;
   color: var(--text);
   background: var(--note);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -108,6 +109,57 @@ a {
   justify-content: flex-end;
 }
 
+.window-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 18px 0 8px;
+}
+
+.window-control {
+  display: grid;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: rgba(35, 35, 35, 0.72);
+  place-items: center;
+  cursor: pointer;
+}
+
+.window-control--close {
+  background: #ff5f57;
+}
+
+.window-control--minimize {
+  background: #febc2e;
+}
+
+.window-control--zoom {
+  background: #28c840;
+}
+
+.window-control svg {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+.window-controls:hover .window-control svg,
+.window-control:focus-visible svg {
+  opacity: 1;
+}
+
+.window-control:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
 .icon-button,
 .compose-button {
   display: grid;
@@ -132,6 +184,22 @@ a {
   background: var(--control);
 }
 
+.toolbar__view-button[aria-pressed="true"] {
+  color: var(--text);
+  background: var(--control);
+}
+
+.toolbar__separator {
+  width: 1px;
+  height: 24px;
+  margin: 0 2px;
+  background: var(--separator);
+}
+
+.toolbar__trash-button {
+  margin-left: 7px;
+}
+
 .icon-button:active,
 .compose-button:active {
   transform: scale(0.94);
@@ -139,16 +207,39 @@ a {
 
 .icon-button svg,
 .compose-button svg {
+  display: block;
   width: 18px;
   height: 18px;
+  flex: 0 0 auto;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
+  transform: translateY(var(--icon-optical-y, 0)) scale(var(--icon-optical-scale, 1));
+  transform-origin: center;
 }
 
-.theme-icon--moon {
+#sidebarToggle,
+#listViewButton {
+  --icon-optical-scale: 1.05;
+}
+
+#gridButton {
+  --icon-optical-scale: 1.08;
+}
+
+#trashButton {
+  --icon-optical-scale: 0.98;
+  --icon-optical-y: -0.5px;
+}
+
+#newNoteButton {
+  --icon-optical-scale: 1.09;
+  --icon-optical-y: 0.5px;
+}
+
+.icon-button .theme-icon--moon {
   display: none;
 }
 
@@ -237,7 +328,7 @@ a {
 .gallery__date {
   margin: 0 0 22px;
   color: var(--note-date-color);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-ui);
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 0;
@@ -483,23 +574,40 @@ a {
 }
 
 .note-list__item + .note-list__item {
-  margin-top: 1px;
+  margin-top: 3px;
+  padding-top: 2px;
+}
+
+.note-list__item + .note-list__item::before {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  left: 8px;
+  height: 1px;
+  background: var(--separator);
+  content: "";
+}
+
+.note-list__item.is-active::before,
+.note-list__item.is-active + .note-list__item::before {
+  display: none;
 }
 
 .note-list__button {
   display: grid;
   width: 100%;
-  grid-template-columns: 32px minmax(0, 1fr) auto;
+  grid-template-columns: 32px minmax(0, 1fr);
+  grid-template-rows: auto auto;
   align-items: center;
-  min-height: 42px;
-  padding: 5px 12px 5px 10px;
+  min-height: 68px;
+  padding: 10px 12px 10px 10px;
   border: 0;
   border-radius: 7px;
   color: inherit;
   background: transparent;
   text-align: left;
   cursor: pointer;
-  transition: background-color 120ms ease, transform 120ms ease;
+  transition: transform 120ms ease;
 }
 
 .note-list__button:hover {
@@ -520,12 +628,16 @@ a {
   width: 24px;
   height: 24px;
   flex: 0 0 auto;
+  grid-column: 1;
+  grid-row: 1;
   place-items: center;
   font-size: 19px;
 }
 
 .note-list__title {
   display: block;
+  grid-column: 2;
+  grid-row: 1;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -533,18 +645,29 @@ a {
 
 .note-list__title {
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 
-.note-list__count {
-  padding-left: 10px;
-  color: var(--secondary);
-  font-size: 14px;
-  font-variant-numeric: tabular-nums;
+.note-list__preview {
+  display: block;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  color: var(--note-date-color);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.note-list__button[aria-current="page"] .note-list__count {
+.note-list__button[aria-current="page"] .note-list__preview {
   color: color-mix(in srgb, var(--selected-text) 72%, transparent);
 }
 
@@ -584,7 +707,7 @@ a {
   display: block;
   margin: 0 0 13px;
   color: var(--note-date-color);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-ui);
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 0;
@@ -789,7 +912,9 @@ a {
   .gallery__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
 
+@media (max-width: 760px), (max-width: 1100px) and (pointer: coarse) {
   .workspace {
     position: relative;
     display: block;
@@ -836,12 +961,47 @@ a {
     min-width: 0;
   }
 
+  .toolbar__group {
+    gap: 2px;
+  }
+
+  .window-controls {
+    display: none;
+  }
+
+  #trashButton,
+  #newNoteButton,
+  .toolbar__separator {
+    display: none;
+  }
+
+  .toolbar .icon-button {
+    width: 24px;
+    height: 28px;
+    border-radius: 6px;
+  }
+
+  .toolbar .icon-button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .toolbar__separator {
+    height: 20px;
+    margin: 0 1px;
+  }
+
+  .toolbar__trash-button {
+    margin-left: 3px;
+  }
+
   .search kbd {
     display: none;
   }
 
   .search {
-    width: min(190px, 44vw);
+    width: min(130px, 24vw);
+    margin-left: 2px;
   }
 
   .gallery {

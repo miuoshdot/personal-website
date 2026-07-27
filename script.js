@@ -9,18 +9,70 @@ const notes = [
     group: "Pinned",
     content: `
       <h1>About me</h1>
-      <p class="lead">Student & developer creating thoughtful digital products.</p>
-      <p>
-        This is where a short, focused introduction will go: what you do,
-        what matters to you, and which problems you are best at solving.
+      <p class="lead">
+        Hi, I’m <b>Miłosz Miśkiewicz</b>, pronounced roughly
+        <em>Me-wash Meesh-key-vitch</em> or, for the linguistic geeks,
+        <code>[ˈmi.wɔʂ miɕˈkʲɛ.vit͡ʂ]</code>.
       </p>
-      <h2>Outside of work</h2>
       <p>
-        A place for your interests, favorite tools, books, or anything else
-        that makes this website sound like you — not another résumé.
+        I’m a third-year
+        <a
+          href="https://ww2.mini.pw.edu.pl/studia/inzynierskie-i-licencjackie/inzynieria-i-analiza-danych/"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+          title="View the Data Science programme"
+        >Data Science</a>
+        student at the
+        <a
+          href="https://ww4.mini.pw.edu.pl/"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+          title="Visit the MiNI website"
+        >Faculty of Mathematics and Information Science</a>
+        (MiNI) at
+        <a
+          href="https://eng.pw.edu.pl/"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+          title="Visit Warsaw University of Technology"
+        >Warsaw University of Technology</a>, working toward a bachelor’s degree
+        in engineering.
       </p>
-      <hr class="note-rule" />
-      <p><em>Tip: two or three short paragraphs are usually enough.</em></p>
+      <p>
+        I’m curious about technology, especially software and AI, with a
+        particular interest in data mining, web scraping, and turning messy
+        information into useful products.
+      </p>
+      <p>
+        Born, raised, and currently based in
+        <a
+          href="https://share.google/3rWxIilLs5elOUNxR"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+          title="Open Warsaw in Google Maps"
+        >Warsaw, Poland</a>.
+        Casually obsessed with getting things right.
+      </p>
+      <p>
+        Right now, I’m building
+        <a
+          href="https://www.sedno.news/"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Visit Sedno"
+        >Sedno</a>, an AI-powered media intelligence platform that monitors
+        news in real time and turns noisy coverage into concise summaries and
+        actionable insights.
+      </p>
+      <p>
+        See what I’m building (apart from this site, which is still a work in
+        progress)&nbsp;<a
+          href="/projects"
+          data-note-link="projects"
+          aria-label="Go to Projects"
+          title="Go to Projects"
+        >↓</a>
+      </p>
     `,
   },
   {
@@ -31,25 +83,127 @@ const notes = [
     group: "Pinned",
     content: `
       <h1>Projects</h1>
-      <p class="lead">A few things I am particularly proud of.</p>
-      <div class="project-grid">
-        <section class="project-card">
-          <h2>Project number one ↗</h2>
-          <p>A short description of the problem, your solution, and the outcome.</p>
-        </section>
-        <section class="project-card">
-          <h2>Project number two ↗</h2>
-          <p>This could be an application, a website, an experiment, or a case study.</p>
-        </section>
-        <section class="project-card">
-          <h2>Project number three ↗</h2>
-          <p>Key technologies, the scope of your role, and a link to the result.</p>
-        </section>
-        <section class="project-card">
-          <h2>Next project…</h2>
-          <p>This card is waiting for something new.</p>
-        </section>
-      </div>
+      <p class="lead">
+        Things that made it out of my notes folder and into working code.
+      </p>
+      <h2>
+        <a
+          href="https://www.sedno.news/"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Visit Sedno"
+        >Sedno</a>
+        · AI-powered media intelligence platform
+      </h2>
+      <p>2025 – Present</p>
+      <p>
+        An AI-powered platform that monitors news in real time and turns
+        fragmented coverage into concise summaries and actionable insights.
+        Developed within the NCBR
+        <a
+          href="https://www.gov.pl/web/ncbr/projekt-uczelnie-przyszlosci"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+          title="Learn about Uczelnie Przyszłości"
+        >Uczelnie Przyszłości</a>
+        program, with a
+        public launch planned for September 2026.
+      </p>
+      <ul>
+        <li>
+          Built a resilient RSS ingestion layer with custom parsers, retry
+          mechanisms, and Redis caching.
+        </li>
+        <li>
+          Developed NLP- and LLM-assisted classification for sources with
+          limited or inconsistent metadata.
+        </li>
+        <li>
+          Implemented semantic article grouping with Qdrant and asynchronous
+          processing pipelines with Dramatiq.
+        </li>
+        <li>
+          Iteratively redesigned the ingestion and processing architecture
+          while navigating the legal and ethical constraints of news
+          aggregation.
+        </li>
+      </ul>
+      <h2>
+        <a
+          href="https://github.com/miuoshdot/meritumnews"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open Meritum on GitHub"
+        >Meritum</a>
+        · Real-time news summarization mobile app
+      </h2>
+      <p>2024 – 2025</p>
+      <p>
+        A publicly released mobile application that collected articles from
+        multiple sources and turned them into concise news summaries.
+      </p>
+      <ul>
+        <li>
+          Built multi-source Python scraping workflows using Requests, aiohttp,
+          Beautiful Soup, Selenium, and Playwright.
+        </li>
+        <li>
+          Improved scraping reliability with rotating headers, proxies, retry
+          logic, browser automation, and discovered internal APIs.
+        </li>
+        <li>
+          Containerized the application with Docker and worked with PostgreSQL,
+          LLM APIs, and AWS-based hosting.
+        </li>
+      </ul>
+      <h2>
+        <a
+          href="https://github.com/miuoshdot/csllmui"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open CSLLMUI on GitHub"
+        >CSLLMUI</a>
+        · Custom interface for large language models
+      </h2>
+      <p>2024</p>
+      <p>
+        A configurable Streamlit interface for interacting with multiple
+        OpenAI and Anthropic models from a single application.
+      </p>
+      <ul>
+        <li>
+          Built model switching, persistent chat sessions, token usage
+          tracking, and configurable response settings.
+        </li>
+        <li>
+          Added controls for temperature, memory, and model behavior through a
+          customizable sidebar.
+        </li>
+      </ul>
+      <h2>
+        <a
+          href="https://github.com/miuoshdot/st_better_chat_input"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open Better Chat Input for Streamlit on GitHub"
+        >Better Chat Input for Streamlit</a>
+        · Open-source UI utility
+      </h2>
+      <p>2024</p>
+      <p>
+        A small open-source utility that makes Streamlit’s chat input more
+        flexible without requiring a separate frontend.
+      </p>
+      <ul>
+        <li>
+          Added configurable element orientation, optional borders, and
+          additional containers beside and above the input.
+        </li>
+        <li>
+          Packaged the solution as a reusable Python function with usage
+          examples and documentation.
+        </li>
+      </ul>
     `,
   },
   {
@@ -57,20 +211,38 @@ const notes = [
     icon: "💼",
     title: "Experience",
     count: 2,
-    group: "Pinned",
+    group: "The serious stuff",
     content: `
       <h1>Experience</h1>
-      <p class="lead">A concise, readable overview of my professional path.</p>
-      <h2>Company name · Current role</h2>
-      <p>2024 — present</p>
+      <p class="lead">
+        Gained hands-on experience through collaborative data and AI projects.
+      </p>
+      <h2>
+        Project Member · Data Science Student Research Club (KNDS), MiNI WUT
+      </h2>
+      <p>2025/26 Academic Year · Present</p>
       <ul>
-        <li>the most important responsibility or result,</li>
-        <li>a specific improvement you managed to introduce.</li>
+        <li>
+          Co-developed
+          <a
+            href="https://github.com/Kolo-Naukowe-Data-Science-PW/Chatbot-MiNI"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+            title="Open Chatbot MiNI on GitHub"
+          >Chatbot MiNI</a>, an open-source assistant created by KNDS.
+        </li>
+        <li>
+          Contributed primarily to the web-scraping strategy and data-pipeline
+          design.
+        </li>
       </ul>
-      <h2>Previous company · Role</h2>
-      <p>2021 — 2024</p>
+      <h2>Project Lead · Data Science Student Research Club (KNDS), MiNI WUT</h2>
+      <p>2026/27 Academic Year · Planned</p>
       <ul>
-        <li>a description of the project, team, or measurable outcome.</li>
+        <li>
+          Expected to coordinate and lead a student project developed in
+          collaboration with a global top-10 bank.
+        </li>
       </ul>
     `,
   },
@@ -79,18 +251,137 @@ const notes = [
     icon: "🎓",
     title: "Education",
     count: 1,
-    group: "Pinned",
+    group: "The serious stuff",
     content: `
       <h1>Education</h1>
-      <p class="lead">A place for education, courses, and important milestones.</p>
-      <h2>University or school name</h2>
-      <p>Degree or specialization · 2020 — 2024</p>
+      <p class="lead">
+        Academic foundations <em>(not really)</em> shaping my interests in data and technology.
+        I’ve met some really cool
+        <a
+          href="https://www.linkedin.com/in/bart%C5%82omiej-domanowski-5a6b0b207/"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+          title="Open their LinkedIn profile"
+        >guys</a>
+        &amp;
+        <a
+          href="https://www.linkedin.com/in/aleksandra-mulewicz-3003a722b/"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+          title="Open their LinkedIn profile"
+        >gals</a>
+        along the way.
+      </p>
+      <h2>
+        BEng in Data Engineering and Analytics · Individual Study Programme
+      </h2>
+      <p>
+        2024 – Present · Faculty of Mathematics and Information Science,
+        Warsaw University of Technology
+      </p>
+      <h3>Selected Coursework</h3>
       <ul>
-        <li>key areas of study and interest,</li>
-        <li>an award, thesis project, or extracurricular activity.</li>
+        <li>
+          <strong>Programming & Computer Science:</strong>
+          Advanced Object-Oriented Programming, Algorithms and Data Structures
+        </li>
+        <li>
+          <strong>Data Engineering:</strong>
+          Structured Data Processing, Linear Algebra in Data Analysis
+        </li>
+        <li>
+          <strong>Mathematics & Statistics:</strong>
+          Calculus, Linear Algebra with Geometry, Discrete Mathematics, Probability Theory, Numerical Methods, Stochastic Processes
+        </li>
       </ul>
-      <h2>Courses and certifications</h2>
-      <p>Selected programs, workshops, and training related to your work.</p>
+      <h3>Individual Study Programme</h3>
+      <p>
+        Selected for
+        <a
+          href="https://www.gov.pl/web/ncbr/projekt-uczelnie-przyszlosci"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+          title="Learn about Uczelnie Przyszłości"
+        >Uczelnie Przyszłości</a>
+        with
+        <a
+          href="https://www.sedno.news/"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Visit Sedno"
+        >Sedno</a>
+        and currently following an individual educational pathway combining
+        academic coursework, mentoring, and product development.
+      </p>
+      <h3>Extracurricular Activities</h3>
+      <ul>
+        <li>Member of the Data Science Student Research Club (KNDS)</li>
+      </ul>
+      <h2>
+        BSc in Mathematics · Transferred to Data Engineering and Analytics
+      </h2>
+      <p>
+        2023 – 2024 · Faculty of Mathematics and Information Science,
+        Warsaw University of Technology
+      </p>
+      <p>
+        Completed the first year before transferring to Data Engineering and
+        Analytics, building a strong foundation in calculus, linear algebra with
+        geometry, and discrete mathematics.
+      </p>
+    `,
+  },
+  {
+    id: "achievements",
+    icon: "🏅",
+    title: "Achievements",
+    count: 3,
+    group: "Somewhere in between",
+    content: `
+      <h1>Achievements</h1>
+      <p class="lead">
+        A few milestones shaping my journey so far. Some more serious than others.
+      </p>
+      <h2>
+        NCBR · Uczelnie Przyszłości Programme
+      </h2>
+      <p>
+        <a
+          href="https://www.sedno.news/"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Visit Sedno"
+        >Sedno</a>
+        was selected among the top 100 student projects nationwide for funding,
+        incubation, and structured scientific and business mentoring.
+      </p>
+      <h2>
+        BraveCamp Entrepreneurship Academy · Special Award
+      </h2>
+      <p>
+        Received the
+        <a
+          href="https://ww2.mini.pw.edu.pl/milosz-miskiewicz-student-kierunku-inzynieria-i-analiza-danych-na-wydziale-matematyki-i-nauk-informacyjnych-zdobyl-nagrode-specjalna-w-14-edycji-bravecamp/"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+          title="Read about BraveCamp 2025"
+        >Special Award for Best Project</a>
+        among 22 participants from
+        leading Polish universities. Presented
+        <a
+          href="https://www.sedno.news/"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Visit Sedno"
+        >Sedno</a>
+        to an audience of 200+
+        people, industry experts, and a jury panel.
+      </p>
+      <h2>MAT &amp; Kangurek Mathematics Competitions · Winner</h2>
+      <p>
+        Won two legendary Polish mathematics competitions in primary school.
+        This was probably the peak of my mathematical abilities.
+      </p>
     `,
   },
   {
@@ -98,16 +389,48 @@ const notes = [
     icon: "🧠",
     title: "Skills",
     count: 1,
-    group: "Pinned",
+    group: "Back to casual",
     content: `
       <h1>Skills</h1>
-      <p class="lead">Tools matter, but what you create with them matters more.</p>
-      <h2>Design</h2>
-      <p>Product design, UX/UI, prototyping, design systems, and accessibility.</p>
-      <h2>Development</h2>
-      <p>HTML, CSS, JavaScript, and the other technologies you use.</p>
-      <h2>Collaboration</h2>
-      <p>Workshops, communication, project leadership, and teamwork.</p>
+      <p class="lead">
+        Tools matter, but what you create with them matters more.
+        Through a fair amount of trial and error, I’ve worked with:
+      </p>
+      <ul>
+        <li>
+          <strong>Programming Languages:</strong>
+          Python, SQL, JavaScript, Java, R <em>(ouch)</em>, MATLAB, Bash,
+          PowerShell
+        </li>
+        <li>
+          <strong>Web, Backend & API Technologies:</strong>
+          HTML, CSS, Next.js, Django, Streamlit, Reflex (formerly Pynecone),
+          Pydantic, Celery, REST APIs, major LLM APIs, OpenRouter
+        </li>
+        <li>
+          <strong>Data & Scientific Computing:</strong>
+          NumPy, SciPy, pandas, Matplotlib, seaborn, Plotly, dplyr, tidyr,
+          ggplot2, Shiny
+        </li>
+        <li>
+          <strong>Web Scraping:</strong>
+          Requests, HTTPX, aiohttp, asyncio, Beautiful Soup 4, Playwright,
+          Selenium, Firecrawl
+        </li>
+        <li>
+          <strong>Databases:</strong>
+          PostgreSQL, MySQL, SQLite, pgvector, Supabase, Firebase, Qdrant,
+          ChromaDB
+        </li>
+        <li>
+          <strong>Cloud & Tools:</strong>
+          Git, GitHub, Docker, Redis, AWS Lambda, Vercel
+        </li>
+      </ul>
+      <p>
+      Some are daily drivers. Others are tools
+      I’ve used when the problem called for them.
+      </p>
     `,
   },
   {
@@ -115,19 +438,27 @@ const notes = [
     icon: "✉️",
     title: "Contact",
     count: 1,
-    group: "Pinned",
+    group: "Back to casual",
     content: `
       <h1>Contact</h1>
-      <p class="lead">Have an idea, a question, or simply want to say hello?</p>
-      <p>
-        The easiest way to reach me is by email:
-        <a href="mailto:hello@example.com">hello@example.com</a>
+      <p class="lead">
+        You can find me on
+        <a
+          href="https://www.linkedin.com/in/miloszmiskiewicz/"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open my LinkedIn profile"
+        >LinkedIn</a>
+        and
+        <a
+          href="https://github.com/miuoshdot"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open my GitHub profile"
+        >GitHub</a>.
       </p>
       <p>
-        You can also find me on
-        <a href="#" aria-label="LinkedIn profile">LinkedIn</a>,
-        <a href="#" aria-label="GitHub profile">GitHub</a>,
-        or anywhere else you would like to link here.
+      Peace ✌️
       </p>
     `,
   },
@@ -147,6 +478,10 @@ const searchInput = document.querySelector("#searchInput");
 const searchShortcut = document.querySelector("#searchShortcut");
 const sidebarToggle = document.querySelector("#sidebarToggle");
 const listViewButton = document.querySelector("#listViewButton");
+const closeWindowButton = document.querySelector("#closeWindowButton");
+const minimizeWindowButton = document.querySelector("#minimizeWindowButton");
+const closeDialog = document.querySelector("#closeDialog");
+const fullscreenButton = document.querySelector("#fullscreenButton");
 const themeToggle = document.querySelector("#themeToggle");
 const shareButton = document.querySelector("#shareButton");
 const gridButton = document.querySelector("#gridButton");
@@ -587,6 +922,44 @@ function showToast(message) {
   }, 2200);
 }
 
+function getFullscreenElement() {
+  return document.fullscreenElement || document.webkitFullscreenElement;
+}
+
+function updateFullscreenButton() {
+  const isFullscreen = Boolean(getFullscreenElement());
+  const label = isFullscreen ? "Exit full screen" : "Enter full screen";
+
+  fullscreenButton.setAttribute("aria-label", label);
+  fullscreenButton.title = label;
+}
+
+async function toggleFullscreen() {
+  const root = document.documentElement;
+  const requestFullscreen =
+    root.requestFullscreen || root.webkitRequestFullscreen;
+  const exitFullscreen =
+    document.exitFullscreen || document.webkitExitFullscreen;
+
+  try {
+    if (getFullscreenElement()) {
+      if (exitFullscreen) {
+        await exitFullscreen.call(document);
+      }
+      return;
+    }
+
+    if (!requestFullscreen) {
+      showToast("Fullscreen is not supported on this device");
+      return;
+    }
+
+    await requestFullscreen.call(root);
+  } catch {
+    showToast("Unable to enter full screen");
+  }
+}
+
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   localStorage.setItem("notes-theme", theme);
@@ -601,6 +974,14 @@ function applyTheme(theme) {
 noteList.addEventListener("click", (event) => {
   const button = event.target.closest("[data-note-id]");
   if (button) scrollToNote(button.dataset.noteId);
+});
+
+noteContent.addEventListener("click", (event) => {
+  const link = event.target.closest("[data-note-link]");
+  if (!link) return;
+
+  event.preventDefault();
+  scrollToNote(link.dataset.noteLink);
 });
 
 searchInput.addEventListener("input", (event) => {
@@ -649,6 +1030,28 @@ sidebarToggle.addEventListener("click", () => {
     setSidebar(app.classList.contains("sidebar-hidden"));
   }
 });
+
+closeWindowButton.addEventListener("click", () => {
+  if (typeof closeDialog.showModal === "function") {
+    closeDialog.showModal();
+  } else {
+    closeDialog.setAttribute("open", "");
+  }
+});
+
+minimizeWindowButton.addEventListener("click", () => {
+  showToast("Coming soon");
+});
+
+closeDialog.addEventListener("click", (event) => {
+  if (event.target === closeDialog) {
+    closeDialog.close();
+  }
+});
+
+fullscreenButton.addEventListener("click", toggleFullscreen);
+document.addEventListener("fullscreenchange", updateFullscreenButton);
+document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
 
 themeToggle.addEventListener("click", () => {
   const nextTheme =

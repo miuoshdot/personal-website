@@ -31,3 +31,9 @@ The main visual inspiration is Apple Notes, including its layout, spacing, color
 On Apple devices, the website uses the native system font stack, which resolves to San Francisco. On other platforms, it falls back to [Inter](https://fonts.google.com/specimen/Inter) to keep the experience as consistent as possible.
 
 This is an independent personal project and is not affiliated with or endorsed by Apple.
+
+## License
+
+The source code in this repository is licensed under the MIT License.
+
+The website content, including personal information, written content, images, branding, and other media assets, is © Miłosz Miśkiewicz. All rights reserved.
